@@ -1,23 +1,17 @@
-import app from "./app.js"
-import 'dotenv/config'
-import { connectToMongoDB } from "./config/db.js";
+// dotenv সবার আগে load হতে হবে, নাহলে env.js undefined URI পাবে
+import 'dotenv/config';
+import app from "./app.js";
+import { connectDB } from "./config/db.js";
 
-
-const port =  5000
+const port = process.env.PORT || 5000;
 
 try {
-
-   const connectedClient = await connectToMongoDB()
-
-
-
-
-
+   await connectDB();
 
    app.listen(port, () => {
-     console.log("server running in port 5000");
+     console.log(`Server running on port ${port}`);
    });
 } catch (error) {
-   console.error("Database connect হয়নি:", err.message);
+   console.error("Database connect হয়নি:", error.message);
    process.exit(1);
 }
